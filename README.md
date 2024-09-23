@@ -22,6 +22,12 @@ _Please note that a LocalStack Pro account is required to run these examples due
 
 Once you have [LocalStack installed](https://docs.localstack.cloud/getting-started/installation/) and have Docker running, you can use the LocalStack CLI to build and deploy each of the examples. You will need the [AWS CDK CLI for LocalStack](https://docs.localstack.cloud/user-guide/integrations/aws-cdk/#aws-cdk-cli-for-localstack) installed as well.
 
+To install all of the prerequisites, you can use the Makefile:
+
+```bash
+make install
+```
+
 Once the prerequisites are installed, you can follow the same basics steps to deploy each example.
 
 Start LocalStack from the terminal:
