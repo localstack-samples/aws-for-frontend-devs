@@ -18,7 +18,7 @@ Each of the examples are built using the [AWS CDK](https://aws.amazon.com/cdk/) 
 
 ### Deploying Locally to LocalStack
 
-_Please note that a LocalStack Pro account is required to run these examples due to features used in the CDK deployment to push local assets to S3 and Lambda. Be sure that you have enabled your [auth token](https://docs.localstack.cloud/getting-started/auth-token/) to access the Pro features._
+_Please note that these examples require a valid [LocalStack for AWS license](https://localstack.cloud/pricing). Export your [`LOCALSTACK_AUTH_TOKEN`](https://docs.localstack.cloud/getting-started/auth-token/) before running the local deployment steps._
 
 Once you have [LocalStack installed](https://docs.localstack.cloud/getting-started/installation/) and have Docker running, you can use the LocalStack CLI to build and deploy each of the examples. You will need the [AWS CDK CLI for LocalStack](https://docs.localstack.cloud/user-guide/integrations/aws-cdk/#aws-cdk-cli-for-localstack) installed as well.
 
