@@ -18,9 +18,9 @@ Each of the examples are built using the [AWS CDK](https://aws.amazon.com/cdk/) 
 
 ### Deploying Locally to LocalStack
 
-_Please note that these examples require a valid [LocalStack for AWS license](https://localstack.cloud/pricing). Export your [`LOCALSTACK_AUTH_TOKEN`](https://docs.localstack.cloud/getting-started/auth-token/) before running the local deployment steps._
+_Please note that these examples require a valid [LocalStack for AWS license](https://localstack.cloud/pricing). Export your [`LOCALSTACK_AUTH_TOKEN`](https://docs.localstack.cloud/aws/getting-started/auth-token/) before running the local deployment steps._
 
-Once you have [LocalStack installed](https://docs.localstack.cloud/getting-started/installation/) and have Docker running, you can use the LocalStack CLI to build and deploy each of the examples. You will need the [AWS CDK CLI for LocalStack](https://docs.localstack.cloud/user-guide/integrations/aws-cdk/#aws-cdk-cli-for-localstack) installed as well.
+Once you have [LocalStack installed](https://docs.localstack.cloud/getting-started/installation/) and have Docker running, you can use the [`lstk` CLI](https://docs.localstack.cloud/aws/developer-tools/running-localstack/lstk/) to build and deploy each of the examples. You will also need the [AWS CDK CLI](https://docs.aws.amazon.com/cdk/latest/guide/getting_started.html) installed, deployed via the `lstk cdk` proxy.
 
 To install all of the prerequisites, you can use the Makefile:
 
@@ -33,20 +33,20 @@ Once the prerequisites are installed, you can follow the same basics steps to de
 Start LocalStack from the terminal:
 
 ```bash
-localstack start
+lstk start
 ```
 
 Next, bootstrap the deployment. For example, to bootstrap the initial S3 example:
 
 ```bash
 cd s3
-cdklocal bootstrap
+lstk cdk bootstrap
 ```
 
 Once the bootstrapping has completed, you can then run the deploy:
 
 ```bash
-cdklocal deploy
+lstk cdk deploy
 ```
 
 After the deploy is completed, you will see some outputs in the terminal. For example for the S3 example, it will output the S3 URL that you can open in your browser to view the static web page.
