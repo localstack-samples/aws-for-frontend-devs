@@ -1,28 +1,28 @@
 ### Deploying Locally to LocalStack
 
-_Please note that these examples require a valid [LocalStack for AWS license](https://localstack.cloud/pricing). Export your [`LOCALSTACK_AUTH_TOKEN`](https://docs.localstack.cloud/getting-started/auth-token/) before running the local deployment steps._
+_Please note that these examples require a valid [LocalStack for AWS license](https://localstack.cloud/pricing). Export your [`LOCALSTACK_AUTH_TOKEN`](https://docs.localstack.cloud/aws/getting-started/auth-token/) before running the local deployment steps._
 
-Once you have [LocalStack installed](https://docs.localstack.cloud/getting-started/installation/) and have Docker running, you can use the LocalStack CLI to build and deploy each of the examples. You will need the [AWS CDK CLI for LocalStack](https://docs.localstack.cloud/user-guide/integrations/aws-cdk/#aws-cdk-cli-for-localstack) installed as well.
+Once you have [LocalStack installed](https://docs.localstack.cloud/getting-started/installation/) and have Docker running, you can use the [`lstk` CLI](https://docs.localstack.cloud/aws/developer-tools/running-localstack/lstk/) to build and deploy each of the examples. You will also need the [AWS CDK CLI](https://docs.aws.amazon.com/cdk/latest/guide/getting_started.html) installed, deployed via the `lstk cdk` proxy.
 
 Once the prerequisites are installed, you can follow the same basics steps to deploy each example.
 
 Start LocalStack from the terminal:
 
 ```bash
-localstack start
+lstk start
 ```
 
 Next, install the dependencies and bootstrap the deployment.
 
 ```bash
 npm install
-cdklocal bootstrap
+lstk cdk bootstrap
 ```
 
 Once the bootstrapping has completed, you can then run the deploy:
 
 ```bash
-cdklocal deploy
+lstk cdk deploy
 ```
 
 After the deploy is completed, you will see some outputs in the terminal displaying the CloudFront distribution URL and the API Gateway URL. You can use the CloudFront distribution URL to load the web site which should automatically return the response from the Lambda function via the API Gateway endpoint. However, alternatively you can view the response from the Lambda by opening the API Gateway URL directly in your browser for the endpoint `hello` (i.e. you'll need to append this to the end of the URL).
