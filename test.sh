@@ -82,18 +82,37 @@ esac
 
 config=$(expect_status 200 "$SITE/config.json")
 configured=$(echo "$config" | jq -r ".$CONFIG_KEY")
-if [ "$configured" = null ] || [[ "$URL" != "$configured"* ]]; then
-  echo "Test failed: config.json has $CONFIG_KEY '$configured', expected the stack output for $URL"
+if [ "$configured" = null ] || [ -z "$configured" ]; then
+  echo "Test failed: config.json has no $CONFIG_KEY: $config"
   exit 1
 fi
-echo "PASS: config.json points the site at $configured"
+echo "PASS: config.json has $CONFIG_KEY $configured"
 
-echo "Backend: $URL"
-response=$(expect_status 200 "$URL")
-if ! echo "$response" | jq -e --arg m "$EXPECTED" '.message == $m' > /dev/null 2>&1; then
-  echo "Test failed: the backend returned '$response', expected message '$EXPECTED'"
+# check_backend <url>: the URL returns the expected message
+check_backend() {
+  local response
+  response=$(expect_status 200 "$1") || return 1
+  if ! echo "$response" | jq -e --arg m "$EXPECTED" '.message == $m' > /dev/null 2>&1; then
+    echo "Test failed: $1 returned '$response', expected message '$EXPECTED'" >&2
+    return 1
+  fi
+}
+
+check_backend "$URL"
+echo "PASS: the stack output URL $URL returned '$EXPECTED'"
+
+# The site calls the configured URL, and for API Gateway falls back to the URL
+# without the region segment (see site_assets/main.js)
+site_url=$configured
+[ "$CONFIG_KEY" = api_url ] && site_url="${configured}hello"
+if check_backend "$site_url"; then
+  echo "PASS: the URL the site loads from config.json returned the message"
+elif [ "$CONFIG_KEY" = api_url ]; then
+  fallback="$(echo "$configured" | awk -F. 'BEGIN {OFS="."} {$3=""; sub(/\.\./, "."); print}')hello"
+  check_backend "$fallback"
+  echo "PASS: the site's fallback URL $fallback returned the message"
+else
   exit 1
 fi
-echo "PASS: the backend returned '$EXPECTED'"
 
 echo "Test passed: $EXAMPLE serves the demo site and its backend responds"
