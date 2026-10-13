@@ -105,14 +105,15 @@ echo "PASS: the stack output URL $URL returned '$EXPECTED'"
 # without the region segment (see site_assets/main.js)
 site_url=$configured
 [ "$CONFIG_KEY" = api_url ] && site_url="${configured}hello"
-if check_backend "$site_url"; then
+if check_backend "$site_url" 2> /dev/null; then
   echo "PASS: the URL the site loads from config.json returned the message"
 elif [ "$CONFIG_KEY" = api_url ]; then
+  echo "Note: $site_url did not respond, trying the site's fallback URL"
   fallback="$(echo "$configured" | awk -F. 'BEGIN {OFS="."} {$3=""; sub(/\.\./, "."); print}')hello"
   check_backend "$fallback"
   echo "PASS: the site's fallback URL $fallback returned the message"
 else
-  exit 1
+  check_backend "$site_url"
 fi
 
 echo "Test passed: $EXAMPLE serves the demo site and its backend responds"
