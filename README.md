@@ -54,6 +54,17 @@ After the deploy is completed, you will see some outputs in the terminal. For ex
 * If you get an error during the bootstrap, this can commonly be caused by either LocalStack or Docker not running. Be sure that you are successfully started LocalStack and Docker before bootstrapping.
 * If your deployment fails to load the assets required to run the site (i.e. into S3 and Lambda), be sure that you have successfully added your auth token. When you start up LocalStack in the terminal, you should see a message reading something like `Successfully activated cached license`.
 
+### Testing an Example
+
+With LocalStack running, you can deploy and test any example from the repository root:
+
+```bash
+make deploy EXAMPLE=dynamodb
+make test EXAMPLE=dynamodb
+```
+
+`EXAMPLE` is one of `s3`, `cf-s3`, `lambda`, `api-gateway` or `dynamodb`. The test checks the site is served and, for the examples with a backend, that the backend returns the message the site displays.
+
 ### Deploying Remotely to AWS
 
 You will need to have the [AWS CLI](https://github.com/aws/aws-cli/tree/v2?tab=readme-ov-file#installation) installed and configured for your account (you will likely need to set up an IAM user and obtain an access key). Finally, you will need to install the [AWS CDK CLI](https://docs.aws.amazon.com/cdk/v2/guide/getting_started.html#getting_started_install).
