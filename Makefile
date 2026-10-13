@@ -1,8 +1,11 @@
+EXAMPLE ?= s3
+
 usage:		    ## Shows usage for this Makefile
 	@cat Makefile | grep -E '^[a-zA-Z_-]+:.*?## .*$$' | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-15s\033[0m %s\n", $$1, $$2}'
 
 install:        ## Install dependencies
-	which lstk || npm install -g @localstack/lstk aws-cdk
+	which lstk || npm install -g @localstack/lstk
+	which cdk || npm install -g aws-cdk
 	cd api-gateway && npm install
 	cd cf-s3 && npm install
 	cd dynamodb && npm install
@@ -30,8 +33,14 @@ deploy-api-gateway:         ## Deploy the app to LocalStack
 	    lstk cdk deploy --require-approval=never
 
 deploy-dynamodb:         ## Deploy the app to LocalStack
-	cd api-gateway && \
+	cd dynamodb && \
 	    lstk cdk bootstrap && \
 	    lstk cdk deploy --require-approval=never
 
-.PHONY: usage install deploy-s3 deploy-cf-s3 deploy-lambda deploy-api-gateway deploy-dynamodb
+deploy:         ## Deploy one example to LocalStack, e.g. make deploy EXAMPLE=lambda
+	$(MAKE) deploy-$(EXAMPLE)
+
+test:           ## Test a deployed example, e.g. make test EXAMPLE=lambda
+	./test.sh $(EXAMPLE)
+
+.PHONY: usage install deploy deploy-s3 deploy-cf-s3 deploy-lambda deploy-api-gateway deploy-dynamodb test
